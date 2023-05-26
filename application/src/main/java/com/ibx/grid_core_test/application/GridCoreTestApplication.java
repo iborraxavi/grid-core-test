@@ -1,4 +1,4 @@
-package com.ibx.grid_core_test;
+package com.ibx.grid_core_test.application;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

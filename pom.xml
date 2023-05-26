@@ -6,16 +6,28 @@
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>3.1.0</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<relativePath/>
 	</parent>
+
 	<groupId>com.ibx</groupId>
 	<artifactId>grid_core_test</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>grid_core_test</name>
+    <packaging>pom</packaging>
+
+    <name>grid_core_test</name>
 	<description>Grid Core test of Xavi Iborra</description>
-	<properties>
+
+    <modules>
+        <module>application</module>
+		<module>api</module>
+		<module>domain</module>
+		<module>infrastructure</module>
+	</modules>
+
+    <properties>
 		<java.version>17</java.version>
 	</properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
