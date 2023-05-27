@@ -16,6 +16,21 @@
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <grid_core_test-domain.version>0.0.1-SNAPSHOT</grid_core_test-domain.version>
+        <grid_core_test-api.version>0.0.1-SNAPSHOT</grid_core_test-api.version>
     </properties>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.ibx.grid_core_test.domain</groupId>
+            <artifactId>domain</artifactId>
+            <version>${grid_core_test-domain.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.ibx.grid_core_test.api</groupId>
+            <artifactId>api</artifactId>
+            <version>${grid_core_test-api.version}</version>
+        </dependency>
+    </dependencies>
 </project>
