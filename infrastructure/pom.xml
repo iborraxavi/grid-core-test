@@ -16,6 +16,7 @@
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <spring-boot.repackage.skip>true</spring-boot.repackage.skip>
 
         <grid_core_test-domain.version>0.0.1-SNAPSHOT</grid_core_test-domain.version>
     </properties>
