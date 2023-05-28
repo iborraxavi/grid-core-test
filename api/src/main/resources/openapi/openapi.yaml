@@ -1,0 +1,124 @@
+openapi: 3.0.3
+info:
+  title: IBX API - Grid Core Test
+  description: |-
+    Grid Core Test API by Xavi Iborra
+  termsOfService: http://swagger.io/terms/
+  contact:
+    email: xiborra95@gmail.com
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: '1.0.0'
+externalDocs:
+  description: Find out more about Swagger
+  url: http://swagger.io
+servers:
+  - url: http://localhost:9090
+    description: Development server
+tags:
+  - name: ProductPrices
+    description: Operations about product prices
+    externalDocs:
+      description: Find out more
+      url: http://swagger.io
+
+paths:
+  /ibx/1/product/{productId}/price:
+    get:
+      tags:
+        - ProductPrices
+      summary: Get product price
+      operationId: getProductPrice
+      parameters:
+        - name: productId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+          example: 5422
+          description: Product identifier
+        - name: brandId
+          in: query
+          required: true
+          schema:
+            type: integer
+          example: 1
+          description: Brand identifier
+        - name: applicationDate
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date-time
+          example: "2021-01-28T08:30:00"
+          description: Brand identifier
+      responses:
+        '200':
+          description: return successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetPriceByProductResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultErrorResponse'
+        '404':
+          description: The resource you were trying to reach is not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultErrorResponse'
+        '500':
+          description: 'something went wrong! '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultErrorResponse'
+
+components:
+  schemas:
+    DefaultErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message
+          example: "Something went wrong"
+    GetPriceByProductResponse:
+      type: object
+      properties:
+        priceList:
+          type: integer
+          format: int64
+          description: Price list identifier
+          example: 1
+        productId:
+          type: integer
+          format: int64
+          description: Product identifier
+          example: 12345678
+        brandId:
+          type: integer
+          format: int32
+          description: Brand identifier
+          example: 1
+        startDate:
+          type: string
+          format: date-time
+          description: Start application date
+          example: "2021-01-28T08:30:00"
+        endDate:
+          type: string
+          format: date-time
+          description: End application date
+          example: "2021-01-30T08:30:00"
+        price:
+          type: number
+          format: double
+          description: Price of product
+          example: 30.08
