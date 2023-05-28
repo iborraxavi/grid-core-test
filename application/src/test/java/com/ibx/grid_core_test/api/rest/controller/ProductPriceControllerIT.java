@@ -1,7 +1,7 @@
 package com.ibx.grid_core_test.api.rest.controller;
 
-import com.ibx.grid_core_test.api.rest.model.error.DefaultErrorResponse;
-import com.ibx.grid_core_test.api.rest.model.response.GetPriceByProductResponse;
+import com.ibx.grid_core_test.api.dto.DefaultErrorResponse;
+import com.ibx.grid_core_test.api.dto.GetPriceByProductResponse;
 import com.ibx.grid_core_test.application.GridCoreTestApplication;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -12,7 +12,6 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ActiveProfiles;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -103,12 +102,12 @@ class ProductPriceControllerIT {
         assertEquals(HttpStatus.OK, result.getStatusCode());
         final GetPriceByProductResponse getPriceByProductResponse = result.getBody();
         assertNotNull(getPriceByProductResponse);
-        assertEquals(1, getPriceByProductResponse.getRateId());
+        assertEquals(1, getPriceByProductResponse.getPriceList());
         assertEquals(PRODUCT_ID, getPriceByProductResponse.getProductId());
         assertEquals(BRAND_ID, getPriceByProductResponse.getBrandId());
         assertEquals(LocalDateTime.parse("2020-06-14T00:00:00"), getPriceByProductResponse.getStartDate());
         assertEquals(LocalDateTime.parse("2020-12-31T23:59:59"), getPriceByProductResponse.getEndDate());
-        assertEquals(new BigDecimal("35.5"), getPriceByProductResponse.getPrice());
+        assertEquals(35.5, getPriceByProductResponse.getPrice());
     }
 
     /**
@@ -124,12 +123,12 @@ class ProductPriceControllerIT {
         assertEquals(HttpStatus.OK, result.getStatusCode());
         final GetPriceByProductResponse getPriceByProductResponse = result.getBody();
         assertNotNull(getPriceByProductResponse);
-        assertEquals(2, getPriceByProductResponse.getRateId());
+        assertEquals(2, getPriceByProductResponse.getPriceList());
         assertEquals(PRODUCT_ID, getPriceByProductResponse.getProductId());
         assertEquals(BRAND_ID, getPriceByProductResponse.getBrandId());
         assertEquals(LocalDateTime.parse("2020-06-14T15:00:00"), getPriceByProductResponse.getStartDate());
         assertEquals(LocalDateTime.parse("2020-06-14T18:30:00"), getPriceByProductResponse.getEndDate());
-        assertEquals(new BigDecimal("25.45"), getPriceByProductResponse.getPrice());
+        assertEquals(25.45, getPriceByProductResponse.getPrice());
     }
 
     /**
@@ -145,12 +144,12 @@ class ProductPriceControllerIT {
         assertEquals(HttpStatus.OK, result.getStatusCode());
         final GetPriceByProductResponse getPriceByProductResponse = result.getBody();
         assertNotNull(getPriceByProductResponse);
-        assertEquals(1, getPriceByProductResponse.getRateId());
+        assertEquals(1, getPriceByProductResponse.getPriceList());
         assertEquals(PRODUCT_ID, getPriceByProductResponse.getProductId());
         assertEquals(BRAND_ID, getPriceByProductResponse.getBrandId());
         assertEquals(LocalDateTime.parse("2020-06-14T00:00:00"), getPriceByProductResponse.getStartDate());
         assertEquals(LocalDateTime.parse("2020-12-31T23:59:59"), getPriceByProductResponse.getEndDate());
-        assertEquals(new BigDecimal("35.5"), getPriceByProductResponse.getPrice());
+        assertEquals(35.5, getPriceByProductResponse.getPrice());
     }
 
     /**
@@ -166,12 +165,12 @@ class ProductPriceControllerIT {
         assertEquals(HttpStatus.OK, result.getStatusCode());
         final GetPriceByProductResponse getPriceByProductResponse = result.getBody();
         assertNotNull(getPriceByProductResponse);
-        assertEquals(3, getPriceByProductResponse.getRateId());
+        assertEquals(3, getPriceByProductResponse.getPriceList());
         assertEquals(PRODUCT_ID, getPriceByProductResponse.getProductId());
         assertEquals(BRAND_ID, getPriceByProductResponse.getBrandId());
         assertEquals(LocalDateTime.parse("2020-06-15T00:00:00"), getPriceByProductResponse.getStartDate());
         assertEquals(LocalDateTime.parse("2020-06-15T11:00:00"), getPriceByProductResponse.getEndDate());
-        assertEquals(new BigDecimal("30.5"), getPriceByProductResponse.getPrice());
+        assertEquals(30.5, getPriceByProductResponse.getPrice());
     }
 
     /**
@@ -187,12 +186,12 @@ class ProductPriceControllerIT {
         assertEquals(HttpStatus.OK, result.getStatusCode());
         final GetPriceByProductResponse getPriceByProductResponse = result.getBody();
         assertNotNull(getPriceByProductResponse);
-        assertEquals(4, getPriceByProductResponse.getRateId());
+        assertEquals(4, getPriceByProductResponse.getPriceList());
         assertEquals(PRODUCT_ID, getPriceByProductResponse.getProductId());
         assertEquals(BRAND_ID, getPriceByProductResponse.getBrandId());
         assertEquals(LocalDateTime.parse("2020-06-15T16:00:00"), getPriceByProductResponse.getStartDate());
         assertEquals(LocalDateTime.parse("2020-12-31T23:59:59"), getPriceByProductResponse.getEndDate());
-        assertEquals(new BigDecimal("38.95"), getPriceByProductResponse.getPrice());
+        assertEquals(38.95, getPriceByProductResponse.getPrice());
     }
 
     private String getProductPricePath(final Long productId, final Integer brandId, final LocalDateTime applicationDate) {
@@ -201,17 +200,24 @@ class ProductPriceControllerIT {
         String absolutePath = String.format(COMMON_PATH, port, getProductPricePath);
 
         if (brandId != null) {
-            absolutePath = absolutePath.concat(String.format(BRAND_ID_PARAM, brandId));
+            absolutePath = absolutePath.concat(buildBrandIdParam(brandId));
         }
 
         if (applicationDate != null) {
-            if (brandId != null) {
-                absolutePath = absolutePath.concat(String.format(APPLICATION_DATE_PARAM, "&", applicationDate));
-            } else {
-                absolutePath = absolutePath.concat(String.format(APPLICATION_DATE_PARAM, "?", applicationDate));
-            }
+            absolutePath = absolutePath.concat(buildApplicationDateParam(applicationDate, brandId));
         }
 
         return absolutePath;
+    }
+
+    private String buildBrandIdParam(final Integer brandId) {
+        return String.format(BRAND_ID_PARAM, brandId);
+    }
+
+    private String buildApplicationDateParam(final LocalDateTime applicationDate, final Integer brandId) {
+        if (brandId != null) {
+            return String.format(APPLICATION_DATE_PARAM, "&", applicationDate);
+        }
+        return String.format(APPLICATION_DATE_PARAM, "?", applicationDate);
     }
 }

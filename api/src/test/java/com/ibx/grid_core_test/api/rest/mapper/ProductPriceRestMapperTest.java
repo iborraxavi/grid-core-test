@@ -1,13 +1,12 @@
 package com.ibx.grid_core_test.api.rest.mapper;
 
-import com.ibx.grid_core_test.domain.model.ProductPriceEntity;
+import com.ibx.grid_core_test.domain.model.ProductPrice;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -25,7 +24,7 @@ class ProductPriceRestMapperTest {
 
     private static final LocalDateTime END_DATE = LocalDateTime.now().plusDays(2);
 
-    private static final BigDecimal PRICE = new BigDecimal("30.08");
+    private static final Double PRICE = 30.08;
 
     @InjectMocks
     private ProductPriceRestMapper productPriceRestMapper;
@@ -44,7 +43,7 @@ class ProductPriceRestMapperTest {
         final var result = productPriceRestMapper.mapGetPriceByProductResponse(getProductPriceEntity());
 
         assertNotNull(result);
-        assertEquals(PRICE_LIST, result.getRateId());
+        assertEquals(PRICE_LIST, result.getPriceList());
         assertEquals(PRODUCT_ID, result.getProductId());
         assertEquals(BRAND_ID, result.getBrandId());
         assertEquals(START_DATE, result.getStartDate());
@@ -52,8 +51,8 @@ class ProductPriceRestMapperTest {
         assertEquals(PRICE, result.getPrice());
     }
 
-    private ProductPriceEntity getProductPriceEntity() {
-        return ProductPriceEntity.builder()
+    private ProductPrice getProductPriceEntity() {
+        return ProductPrice.builder()
                 .priceList(PRICE_LIST)
                 .productId(PRODUCT_ID)
                 .brandId(BRAND_ID)

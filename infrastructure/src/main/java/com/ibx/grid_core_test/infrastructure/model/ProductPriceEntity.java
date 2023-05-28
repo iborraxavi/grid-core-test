@@ -1,24 +1,21 @@
-package com.ibx.grid_core_test.domain.model;
+package com.ibx.grid_core_test.infrastructure.model;
 
 import lombok.Builder;
 import lombok.Getter;
-import lombok.ToString;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-@ToString
 @Getter
 @Builder
 @Table(name = "PRODUCT_PRICES")
 public class ProductPriceEntity {
 
     @Id
-    private final String id;
+    private final Long id;
 
     @Column(value = "BRAND_ID")
     private final Integer brandId;
@@ -39,7 +36,7 @@ public class ProductPriceEntity {
 
     private final Integer priority;
 
-    private BigDecimal price;
+    private Double price;
 
     private String currency;
 }

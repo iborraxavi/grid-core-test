@@ -1,8 +1,8 @@
 package com.ibx.grid_core_test.api.rest.controller;
 
+import com.ibx.grid_core_test.api.dto.GetPriceByProductResponse;
 import com.ibx.grid_core_test.api.rest.mapper.ProductPriceRestMapper;
-import com.ibx.grid_core_test.api.rest.model.response.GetPriceByProductResponse;
-import com.ibx.grid_core_test.domain.model.ProductPriceEntity;
+import com.ibx.grid_core_test.domain.model.ProductPrice;
 import com.ibx.grid_core_test.domain.model.exception.ProductPriceNotFoundException;
 import com.ibx.grid_core_test.domain.use_cases.GetPriceByProductUseCase;
 import org.junit.jupiter.api.DisplayName;
@@ -12,6 +12,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
@@ -22,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class ProductPriceControllerTest {
+class ProductPricesControllerTest {
 
     private static final Long PRODUCT_ID = 1111111L;
 
@@ -37,15 +38,17 @@ class ProductPriceControllerTest {
     private GetPriceByProductUseCase getPriceByProductUseCase;
 
     @InjectMocks
-    private ProductPriceController productPriceController;
+    private ProductPricesController productPriceController;
 
     @Test
     @DisplayName("Get price by product when get price by product use case error")
     void getPriceByProduct_whenGetPriceByProductUseCaseError_shouldReturnExpectedError() {
+        final ServerWebExchange serverWebExchange = mock(ServerWebExchange.class);
+
         when(getPriceByProductUseCase.dispatch(PRODUCT_ID, BRAND_ID, APPLICATION_DATE))
                 .thenReturn(Mono.error(mock(ProductPriceNotFoundException.class)));
 
-        final var result = productPriceController.getPriceByProduct(PRODUCT_ID, BRAND_ID, APPLICATION_DATE);
+        final var result = productPriceController.getProductPrice(PRODUCT_ID, BRAND_ID, APPLICATION_DATE, serverWebExchange);
 
         StepVerifier.create(result)
                 .expectError(ProductPriceNotFoundException.class)
@@ -58,7 +61,8 @@ class ProductPriceControllerTest {
     @Test
     @DisplayName("Get price by product when success")
     void getPriceByProduct_whenSuccess_shouldReturnExpectedResponse() {
-        final ProductPriceEntity productPriceEntity = mock(ProductPriceEntity.class);
+        final ServerWebExchange serverWebExchange = mock(ServerWebExchange.class);
+        final ProductPrice productPriceEntity = mock(ProductPrice.class);
         final GetPriceByProductResponse getPriceByProductResponse = mock(GetPriceByProductResponse.class);
 
         when(getPriceByProductUseCase.dispatch(PRODUCT_ID, BRAND_ID, APPLICATION_DATE))
@@ -66,7 +70,7 @@ class ProductPriceControllerTest {
         when(productPriceRestMapper.mapGetPriceByProductResponse(productPriceEntity))
                 .thenReturn(getPriceByProductResponse);
 
-        final var result = productPriceController.getPriceByProduct(PRODUCT_ID, BRAND_ID, APPLICATION_DATE);
+        final var result = productPriceController.getProductPrice(PRODUCT_ID, BRAND_ID, APPLICATION_DATE, serverWebExchange);
 
         StepVerifier.create(result)
                 .assertNext(getPriceByProductResponseResponseEntity -> {

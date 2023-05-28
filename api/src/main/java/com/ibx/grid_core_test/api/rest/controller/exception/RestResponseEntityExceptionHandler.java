@@ -1,6 +1,6 @@
 package com.ibx.grid_core_test.api.rest.controller.exception;
 
-import com.ibx.grid_core_test.api.rest.model.error.DefaultErrorResponse;
+import com.ibx.grid_core_test.api.dto.DefaultErrorResponse;
 import com.ibx.grid_core_test.domain.model.exception.ProductPriceNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

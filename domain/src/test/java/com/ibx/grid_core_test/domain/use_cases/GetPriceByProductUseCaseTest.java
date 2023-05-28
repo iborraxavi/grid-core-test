@@ -1,6 +1,6 @@
 package com.ibx.grid_core_test.domain.use_cases;
 
-import com.ibx.grid_core_test.domain.model.ProductPriceEntity;
+import com.ibx.grid_core_test.domain.model.ProductPrice;
 import com.ibx.grid_core_test.domain.model.exception.ProductPriceNotFoundException;
 import com.ibx.grid_core_test.domain.repository.ProductPriceRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -49,7 +49,7 @@ class GetPriceByProductUseCaseTest {
     @Test
     @DisplayName("Dispatch when product price repository return one element")
     void dispatch_whenProductPriceRepositoryReturnOneElement_shouldReturnExpectedProductPriceEntity() {
-        final ProductPriceEntity productPriceEntity = mock(ProductPriceEntity.class);
+        final ProductPrice productPriceEntity = mock(ProductPrice.class);
 
         when(productPriceRepository.findProductPricesByBrandAndDate(PRODUCT_ID, BRAND_ID, APPLICATION_DATE))
                 .thenReturn(Flux.just(productPriceEntity));
@@ -66,8 +66,8 @@ class GetPriceByProductUseCaseTest {
     @Test
     @DisplayName("Dispatch when product price repository return multiple elements and first is prioritized")
     void dispatch_whenProductPriceRepositoryReturnMultipleElementsAndFirstIsPrioritized_shouldReturnFirstElement() {
-        final ProductPriceEntity firstproductPriceEntity = mock(ProductPriceEntity.class);
-        final ProductPriceEntity secondProductPriceEntity = mock(ProductPriceEntity.class);
+        final ProductPrice firstproductPriceEntity = mock(ProductPrice.class);
+        final ProductPrice secondProductPriceEntity = mock(ProductPrice.class);
 
         when(firstproductPriceEntity.getPriority()).thenReturn(2);
         when(secondProductPriceEntity.getPriority()).thenReturn(1);
@@ -86,8 +86,8 @@ class GetPriceByProductUseCaseTest {
     @Test
     @DisplayName("Dispatch when product price repository return multiple elements and second is prioritized")
     void dispatch_whenProductPriceRepositoryReturnMultipleElementsAndSecondIsPrioritized_shouldReturnSecondElement() {
-        final ProductPriceEntity firstproductPriceEntity = mock(ProductPriceEntity.class);
-        final ProductPriceEntity secondProductPriceEntity = mock(ProductPriceEntity.class);
+        final ProductPrice firstproductPriceEntity = mock(ProductPrice.class);
+        final ProductPrice secondProductPriceEntity = mock(ProductPrice.class);
 
         when(firstproductPriceEntity.getPriority()).thenReturn(1);
         when(secondProductPriceEntity.getPriority()).thenReturn(2);
